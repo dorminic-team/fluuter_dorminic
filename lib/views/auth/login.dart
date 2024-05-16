@@ -20,12 +20,37 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  late Future<Map<String, dynamic>>
+      userDataFuture; // Assuming UserData class handles user data
+  bool isLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    userDataFuture = UserData().getUserData();
+    userDataFuture.then((userData) {
+      setState(() {
+        isLoggedIn = userData != null;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final dark = AppHelperFunctions.isDarkMode(context);
+    // Check if user data is available
+
+    // If user data is available, navigate directly to HomeScreen
+    /*if (isLoggedIn) {
+      return const NavBar();
+    }*/
 
     return Scaffold(
       body: SingleChildScrollView(

@@ -42,6 +42,26 @@ class APIClient {
     }
   }
 
+  Future<void> createMaintenance(String orgCode, String title, String description/*, String informantId*/) async {
+    final url = Uri.parse('$baseUrl/api/maintenance');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'org_code': orgCode,
+          'title': title,
+          'description': description,
+          'is_fixed': 'no',
+        }),
+      );
+    } catch (e) {
+      // Handle exception
+      rethrow;
+    }
+  }
+
+
   Future<http.Response> fetchOrganizationDetails(String orgCode) async {
     var url = Uri.parse('$baseUrl/user/organization/getdetails');
 

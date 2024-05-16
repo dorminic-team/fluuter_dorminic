@@ -22,7 +22,7 @@ class MenuScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2, // Updated to 2 tabs
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         child: Scaffold(
           appBar: AppBar(
             title: const Text(

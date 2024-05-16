@@ -90,6 +90,9 @@ class NavBar extends StatelessWidget {
                       icon: Iconsax.home,
                     ),
                     GButton(
+                      icon: Iconsax.menu,
+                    ),
+                    GButton(
                       icon: Iconsax.wallet,
                     ),
                     GButton(
@@ -112,6 +115,7 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
   final screens = [
     const HomeScreen(),
+    const MenuScreen(),
     const Payment(),
     const MaintenanceScreen(),
     const SettingScreen()
