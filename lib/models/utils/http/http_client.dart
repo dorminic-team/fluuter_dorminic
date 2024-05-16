@@ -12,13 +12,14 @@ class APIClient {
   APIClient._internal();
 
   final String baseUrl =
-      'https://dorminic-express-server-7zemj3wqeq-de.a.run.app';
+      //'https://dorminic-express-server-7zemj3wqeq-de.a.run.app';
+      'http://192.168.1.199:3000';
   http.Client client = http.Client();
 
   // Example method for making API requests
 
   Future<http.Response> loginUser(String username, String password) async {
-    var url = Uri.parse('$baseUrl/login');
+    var url = Uri.parse('$baseUrl/api/login');
     try {
       var response = await client.post(
         url,
@@ -28,6 +29,16 @@ class APIClient {
       return response;
     } catch (e) {
       rethrow; // Rethrow the error to propagate it further if needed
+    }
+  }
+
+  Future<http.Response> fetchMaintenanceService(String orgCode) async {
+    var url = Uri.parse('$baseUrl/api/maintenance/$orgCode'); // Replace with your actual URL
+    try {
+      var response = await client.get(url);
+      return response;
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -62,8 +73,8 @@ class APIClient {
     }
   }
 
-  Future<http.Response> fetchBills(String orgCode, String userId) async {
-    var url = Uri.parse('$baseUrl/bill/$orgCode/user/$userId');
+  Future<http.Response> fetchBillsService(String orgCode, String userId) async {
+    var url = Uri.parse('$baseUrl/api/bills/customer_id/$userId?org_code=$orgCode');
 
     try {
       var response = await client.get(

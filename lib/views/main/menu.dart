@@ -66,7 +66,7 @@ class MenuScreen extends StatelessWidget {
               Center(
                 child: FutureBuilder<List<Announcement>>(
                   future: APIClient().fetchAnnouncements(
-                      '${authProvider.userData!['org_code']}'),
+                      '${authProvider.userData?['org_code'] ?? 'Unavalable'}'),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());

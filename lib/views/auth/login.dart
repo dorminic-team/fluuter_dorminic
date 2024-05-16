@@ -4,6 +4,7 @@ import 'package:dorminic_co/main.dart';
 import 'package:dorminic_co/models/data/authprovider.dart';
 import 'package:dorminic_co/models/data/organizationprovider.dart';
 import 'package:dorminic_co/models/data/roomprovider.dart';
+import 'package:dorminic_co/models/data/userData/userData.dart';
 import 'package:dorminic_co/models/utils/constants/assetpath.dart';
 import 'package:dorminic_co/models/utils/constants/sizes.dart';
 import 'package:dorminic_co/models/utils/constants/text_provider.dart';
@@ -105,66 +106,16 @@ class _LoginFormState extends State<LoginForm> {
     String password = passwordController.text.trim();
     try {
       var response = await apiClient.loginUser(username, password);
+      Map<String, dynamic> userData = jsonDecode(response.body);
+
+      // Save userData to SharedPreferences
+      await saveUserData(userData);
 
       if (response.statusCode == 200) {
-        var responseData = jsonDecode(response.body);
-        String? orgCode = responseData['userData']['org_code'];
-        String? uuid = responseData['userData']['userId'];
-        AuthProvider authProvider =
-            Provider.of<AuthProvider>(context, listen: false);
-        authProvider.saveLoginDetails(responseData);
-        String? token = responseData['token'];
-
-        if (orgCode != null && orgCode.isNotEmpty) {
-          var orgResponse = await apiClient.fetchOrganizationDetails(orgCode);
-          if (orgResponse.statusCode == 200) {
-            if (token != null && token.isNotEmpty) {
-              const storage = FlutterSecureStorage();
-              await storage.write(key: 'auth_token', value: token);
-
-              setState(() {
-                isLoggedIn = true;
-              });
-
-              var orgResponseData = jsonDecode(orgResponse.body);
-              OrganizationProvider organizationProvider =
-                  Provider.of<OrganizationProvider>(context, listen: false);
-              organizationProvider.saveOrganizationDetails(orgResponseData);
-
-              try {
-                var roomResponse =
-                    await apiClient.fetchRoomDetails(orgCode, uuid!);
-                if (roomResponse.statusCode == 200) {
-                  var roomResponseData = jsonDecode(roomResponse.body);
-                  List<dynamic> roomsList = roomResponseData['room_number'];
-                  List<String> roomNumbers = roomsList
-                      .map((room) => room['room_number'].toString())
-                      .toList();
-                  RoomProvider roomProvider =
-                      Provider.of<RoomProvider>(context, listen: false);
-                  roomProvider.saveRoomNumbers(roomNumbers);
-                  // Process room data here as needed
-                  Get.offAll(const NavBar());
-                } else {
-                  Get.snackbar('Error', 'Failed to fetch room details');
-                }
-              } catch (e) {// Log the error message
-                Get.snackbar('Error',
-                    'An error occurred while fetching room details');
-              }
-
-              // Navigate to the HomeScreen or perform any other action
-            } else {
-              Get.snackbar('Error', 'Invalid token received');
-            }
-          } else {
-            Get.snackbar('Error', 'Failed to fetch organization details');
-          }
-        } else {
-          Get.snackbar('Error', 'Contact your accommodation\'s administrator');
-        }
-      } else {
-        Get.snackbar('Error', 'Invalid username or password');
+        setState(() {
+          isLoggedIn = true;
+        });
+        Get.offAll(const NavBar());
       }
     } catch (e) {
       // Handle network or other exceptions

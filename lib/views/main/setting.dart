@@ -1,6 +1,7 @@
 import 'package:dorminic_co/models/data/authprovider.dart';
 import 'package:dorminic_co/models/data/organizationprovider.dart';
 import 'package:dorminic_co/models/data/roomprovider.dart';
+import 'package:dorminic_co/models/data/userData/userData.dart';
 import 'package:dorminic_co/views/auth/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -15,10 +16,32 @@ import '../../models/widgets/section_heading.dart';
 import '../../models/widgets/settings_menu_tile.dart';
 import '../../models/widgets/user_profile_tile.dart';
 
-class SettingScreen extends StatelessWidget {
-  const SettingScreen({super.key});
+class SettingScreen extends StatefulWidget {
 
+  const SettingScreen({super.key});
+    @override
+  _SettingScreen createState() => _SettingScreen();
+}
+
+class _SettingScreen extends State<SettingScreen> {
+  Map<String, dynamic> userData = {};
   @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+    Future<void> fetchUserData() async {
+    UserData userDataFetcher = UserData();
+    Map<String, dynamic> fetchedData = await userDataFetcher.getUserData();
+    setState(() {
+      userData = fetchedData;
+    });
+  }
+
+
+
+@override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -95,6 +118,7 @@ class SettingScreen extends StatelessWidget {
     );
   }
 }
+
 
 void _signOut(BuildContext context) async{
   // Clear authentication token

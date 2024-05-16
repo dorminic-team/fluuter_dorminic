@@ -5,7 +5,10 @@ class AppColors {
   static const Color primary = Color(0xFF4b68ff);
   static const Color secondary = Color(0xFFFFE24B);
   static const Color accent = Color(0xFFb0c7ff);
-
+  static const Color teal400 = Color(0xFF2dd4bf);
+  static const Color blue600 = Color(0xFF2563eb);
+  static const Color cyan400 = Color(0xFF67e8f9);
+  static const Color amber400 = Color(0xFFf59e0b);
   // Text colors
   static const Color textPrimary = Color(0xFF333333);
   static const Color textSecondary = Color(0xFF6C757D);
@@ -38,6 +41,7 @@ class AppColors {
   // Neutral Shades
   static const Color black = Color(0xFF000000);
   static const Color greyblack = Color(0xFF232323);
+  static const Color greyblacker = Color.fromARGB(255, 8, 8, 8);
   static const Color darkerGrey = Color(0xFF4F4F4F);
   static const Color darkGrey = Color(0xFF939393);
   static const Color grey = Color(0xFFE0E0E0);
