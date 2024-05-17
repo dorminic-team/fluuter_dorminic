@@ -62,7 +62,7 @@ class _PaymentState extends State<Payment> {
         body: RefreshIndicator(
           onRefresh: _refreshData,
           child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Column(children: [
               const SizedBox(
                 height: AppSizes.spaceBtwItems,
@@ -100,7 +100,7 @@ class _PaymentState extends State<Payment> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white.withOpacity(0.5)),
                               ),
-                              Text(
+                              const Text(
                                 '1000',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
@@ -112,7 +112,7 @@ class _PaymentState extends State<Payment> {
                         const SizedBox(
                           height: 32,
                         ),
-                        Row(
+                        const Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [Text('Due date: '), Text('May 15, 2024')],
                         ),
@@ -142,7 +142,7 @@ class _PaymentState extends State<Payment> {
                 children: [
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     height: 75,
                     decoration: BoxDecoration(
                       borderRadius:
@@ -164,20 +164,20 @@ class _PaymentState extends State<Payment> {
                           child: const Icon(Iconsax.clock5),
                         ),
                         const SizedBox(width: 16),
-                        Column(
+                        const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'title',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: AppSizes.fontSizeLg,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
                               'description',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: AppSizes.fontSizeSm,
                                 fontWeight: FontWeight.normal,
                               ),

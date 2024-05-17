@@ -91,6 +91,7 @@ class _SignupFormState extends State<SignupForm> {
   void _registerUser() async {
   // Get user input from form fields
   String username = usernameController.text.trim();
+  String email = emailController.text.trim();
   String password = passwordController.text.trim();
   String firstName = firstNameController.text.trim();
   String lastName = lastNameController.text.trim();
@@ -100,19 +101,14 @@ class _SignupFormState extends State<SignupForm> {
     var response = await APIClient().registerUser(
       username: username,
       password: password,
+      email: email,
       firstname: firstName,
       lastname: lastName,
       role: role,
     );
-
-    if (response.statusCode == 201) {
       // Registration successful
       Get.snackbar('Success', 'User registered successfully');
       Get.offAll(const LoginScreen());
-    } else {
-      // Registration failed
-      Get.snackbar('Error', 'Failed to register user');
-    }
   } catch (e) {
     // Handle network or other exceptions
     Get.snackbar('Error', 'An error occurred. Please try again later.');

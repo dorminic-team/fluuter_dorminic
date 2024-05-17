@@ -1,9 +1,6 @@
 import 'dart:convert';
 
 import 'package:dorminic_co/main.dart';
-import 'package:dorminic_co/models/data/authprovider.dart';
-import 'package:dorminic_co/models/data/organizationprovider.dart';
-import 'package:dorminic_co/models/data/roomprovider.dart';
 import 'package:dorminic_co/models/data/userData/userData.dart';
 import 'package:dorminic_co/models/utils/constants/assetpath.dart';
 import 'package:dorminic_co/models/utils/constants/sizes.dart';
@@ -13,12 +10,10 @@ import 'package:dorminic_co/models/utils/helpers/helper_functions.dart';
 import 'package:dorminic_co/models/utils/helpers/passwordvisibilitytoggle.dart';
 import 'package:dorminic_co/models/utils/http/http_client.dart';
 import 'package:dorminic_co/views/auth/signup.dart';
-import 'package:dorminic_co/views/main/home.dart';
+import 'package:dorminic_co/views/main/components/qr-enrollorg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -141,6 +136,9 @@ class _LoginFormState extends State<LoginForm> {
           isLoggedIn = true;
         });
         Get.offAll(const NavBar());
+      }
+      if (response.statusCode == 404){
+        Get.to(const QRenrollOrg());
       }
     } catch (e) {
       // Handle network or other exceptions

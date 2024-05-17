@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:dorminic_co/models/data/function/maintenanceService.dart';
 import 'package:dorminic_co/models/data/userData/userData.dart';
 import 'package:dorminic_co/models/utils/http/http_client.dart';
@@ -248,7 +247,7 @@ class MaintenanceScreenState extends State<MaintenanceScreen> {
                       ),
                     ),
                     floatingActionButton: SizedBox(
-                      width: 150.0,
+                      width: 56.0,
                       height: 56.0,
                       child: RawMaterialButton(
                         onPressed: () async {
@@ -269,15 +268,7 @@ class MaintenanceScreenState extends State<MaintenanceScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Iconsax.add, color: Colors.white),
-                            SizedBox(width: 12.0),
-                            Text(
-                              'Create New',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: AppSizes.fontSizeLg,
-                              ),
-                            ),
+                            
                           ],
                         ),
                       ),

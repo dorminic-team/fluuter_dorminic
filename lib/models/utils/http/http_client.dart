@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:dorminic_co/models/data/annoucementprovider.dart';
 import 'package:http/http.dart' as http;
 
 class APIClient {
@@ -62,20 +61,7 @@ class APIClient {
   }
 
 
-  Future<http.Response> fetchOrganizationDetails(String orgCode) async {
-    var url = Uri.parse('$baseUrl/user/organization/getdetails');
 
-    try {
-      var response = await client.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'org_code': orgCode}),
-      );
-      return response;
-    } catch (e) {
-      rethrow; // Rethrow the error to propagate it further if needed
-    }
-  }
 
   Future<http.Response> fetchRoomDetails(
       String orgCode, String tenantId) async {
@@ -109,12 +95,13 @@ class APIClient {
 
   Future<http.Response> registerUser({
     required String username,
+    required String email,
     required String password,
     required String firstname,
     required String lastname,
     required String role,
   }) async {
-    var url = Uri.parse('$baseUrl/register');
+    var url = Uri.parse('$baseUrl/api/register');
     try {
       var response = await client.post(
         url,
@@ -122,9 +109,10 @@ class APIClient {
         body: jsonEncode({
           'username': username,
           'password': password,
+          'email': email,
           'firstname': firstname,
           'lastname': lastname,
-          'role': role,
+          'role': 'user',
         }),
       );
       return response;
@@ -133,23 +121,25 @@ class APIClient {
     }
   }
 
-  Future<List<Announcement>> fetchAnnouncements(String orgCode) async {
-    var url = Uri.parse('$baseUrl/announcements?org_code=$orgCode');
+  Future<http.Response> fetchAnnouncements(String orgCode) async {
+    var url = Uri.parse('$baseUrl/api/announcement/$orgCode/findByNotExpired');
 
     try {
-      var response = await http.get(
-        url,
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        final List<dynamic> parsedJson = jsonDecode(response.body);
-        return parsedJson.map((json) => Announcement.fromJson(json)).toList();
-      } else {
-        throw Exception('Failed to load announcements');
-      }
+      var response = await client.get(url);
+      return response;
     } catch (e) {
-      throw Exception('Error fetching announcements: $e');
+      rethrow;
+    }
+  }
+
+  Future<http.Response> fetchParcel(String orgCode, String userId) async {
+    var url = Uri.parse('$baseUrl/api/mail/$orgCode/$userId/findByNotExpired');
+
+    try {
+      var response = await client.get(url);
+      return response;
+    } catch (e) {
+      rethrow;
     }
   }
 }

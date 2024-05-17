@@ -6,7 +6,6 @@ import 'package:dorminic_co/models/utils/constants/colors.dart';
 import 'package:dorminic_co/models/utils/helpers/helper_functions.dart';
 import 'package:dorminic_co/models/utils/theme/theme.dart';
 import 'package:dorminic_co/views/auth/login.dart';
-import 'package:dorminic_co/views/main/chat.dart';
 import 'package:dorminic_co/views/main/home.dart';
 import 'package:dorminic_co/views/main/maintenance.dart';
 import 'package:dorminic_co/views/main/menu.dart';
@@ -15,12 +14,17 @@ import 'package:dorminic_co/views/main/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
+String timeZone = '';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  initializeTimeZone();
   const storage = FlutterSecureStorage();
   String? authToken = await storage.read(key: 'auth_token');
 
@@ -40,6 +44,27 @@ void main() async {
       child: MyApp(authToken: authToken),
     ),
   );
+}
+
+class DateUtil {
+  static String formatDate(String dateStr) {
+    int timeZoneOffsetInHours = DateTime.now().timeZoneOffset.inHours;
+    DateTime dateTime = DateTime.parse(dateStr).toLocal();
+    dateTime = dateTime.add(Duration(hours: timeZoneOffsetInHours));
+
+
+    // Format the date with timezone abbreviation
+    DateFormat formatter = DateFormat.yMMMd().add_jm();
+    String formattedDate = formatter.format(dateTime);
+
+    return formattedDate;
+  }
+}
+
+
+void initializeTimeZone() {
+  String timeZone = DateTime.now().timeZoneName;
+  print('Current Timezone: $timeZone');
 }
 
 class MyApp extends StatelessWidget {
@@ -76,36 +101,38 @@ class NavBar extends StatelessWidget {
       bottomNavigationBar: Obx(
         () => Container(
           color: dark ? AppColors.black : AppColors.light,
-            child: SafeArea(
-                child: GNav(
-                  selectedIndex: controller.selectedIndex.value,
-                  onTabChange: (index) => controller.selectedIndex.value = index,
-                  gap: 8,
-                  activeColor: dark ? AppColors.light : AppColors.black,
-                  iconSize: 20,
-                  duration: const Duration(milliseconds: 400),
-                  color: dark ? AppColors.light.withOpacity(0.5) : AppColors.black.withOpacity(0.5),
-                  tabs: const [
-                    GButton(
-                      icon: Iconsax.home,
-                    ),
-                    GButton(
-                      icon: Iconsax.menu,
-                    ),
-                    GButton(
-                      icon: Iconsax.wallet,
-                    ),
-                    GButton(
-                      icon: Iconsax.information,
-                    ),
-                    GButton(
-                      icon: Iconsax.user,
-                    ),
-                  ],
+          child: SafeArea(
+            child: GNav(
+              selectedIndex: controller.selectedIndex.value,
+              onTabChange: (index) => controller.selectedIndex.value = index,
+              gap: 8,
+              activeColor: dark ? AppColors.light : AppColors.black,
+              iconSize: 20,
+              duration: const Duration(milliseconds: 400),
+              color: dark
+                  ? AppColors.light.withOpacity(0.5)
+                  : AppColors.black.withOpacity(0.5),
+              tabs: const [
+                GButton(
+                  icon: Iconsax.home,
                 ),
+                GButton(
+                  icon: Iconsax.menu,
+                ),
+                GButton(
+                  icon: Iconsax.wallet,
+                ),
+                GButton(
+                  icon: Iconsax.information,
+                ),
+                GButton(
+                  icon: Iconsax.user,
+                ),
+              ],
             ),
           ),
         ),
+      ),
       body: Obx(() => controller.screens[controller.selectedIndex.value]),
     );
   }

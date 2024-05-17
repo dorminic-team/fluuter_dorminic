@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:dorminic_co/models/data/annoucementprovider.dart';
 import 'package:dorminic_co/models/utils/http/http_client.dart'; // Make sure the path is correct
 
 class MaintenanceService {
